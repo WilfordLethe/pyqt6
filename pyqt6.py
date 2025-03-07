@@ -1,42 +1,34 @@
 #!/usr/bin/python
-# file: center.py
+# file: statusbar.py
 
 """
 ZetCode PyQt6 tutorial
 
-This program centers a window
-on the screen.
+This program creates a statusbar.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
 import sys
-from PyQt6.QtWidgets import QWidget, QApplication
+from PyQt6.QtWidgets import QMainWindow, QApplication
 
 
-class Example(QWidget):
+class Example(QMainWindow):
 
     def __init__(self):
         super().__init__()
 
         self.initUI()
 
+
     def initUI(self):
 
-        self.resize(350, 250)
-        self.center()
+        self.statusBar().showMessage('Ready')
 
-        self.setWindowTitle('Center')
+        self.setGeometry(300, 300, 350, 250)
+        self.setWindowTitle('Statusbar')
         self.show()
-
-    def center(self):
-
-        qr = self.frameGeometry()
-        cp = self.screen().availableGeometry().center()
-
-        qr.moveCenter(cp)
-        self.move(qr.topLeft())
 
 
 def main():

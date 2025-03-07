@@ -1,25 +1,22 @@
 #!/usr/bin/python
-# file: file_dialog.py
+# file: check_box.py
 
 """
 ZetCode PyQt6 tutorial
 
-In this example, we select a file with a
-QFileDialog and display its contents
-in a QTextEdit.
+In this example, a QCheckBox widget
+is used to toggle the title of a window.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
-from PyQt6.QtWidgets import (QMainWindow, QTextEdit,
-        QFileDialog, QApplication)
-from PyQt6.QtGui import QIcon, QAction
-from pathlib import Path
+from PyQt6.QtWidgets import QWidget, QCheckBox, QApplication
+from PyQt6.QtCore import Qt
 import sys
 
 
-class Example(QMainWindow):
+class Example(QWidget):
 
     def __init__(self):
         super().__init__()
@@ -29,37 +26,22 @@ class Example(QMainWindow):
 
     def initUI(self):
 
-        self.textEdit = QTextEdit()
-        self.setCentralWidget(self.textEdit)
-        self.statusBar()
+        cb = QCheckBox('Show title', self)
+        cb.move(20, 20)
+        cb.toggle()
+        cb.stateChanged.connect(self.changeTitle)
 
-        openFile = QAction(QIcon('open.png'), 'Open', self)
-        openFile.setShortcut('Ctrl+O')
-        openFile.setStatusTip('Open new File')
-        openFile.triggered.connect(self.showDialog)
-
-        menubar = self.menuBar()
-        fileMenu = menubar.addMenu('&File')
-        fileMenu.addAction(openFile)
-
-        self.setGeometry(300, 300, 550, 450)
-        self.setWindowTitle('File dialog')
+        self.setGeometry(300, 300, 350, 250)
+        self.setWindowTitle('QCheckBox')
         self.show()
 
 
-    def showDialog(self):
+    def changeTitle(self, state):
 
-        home_dir = str(Path.home())
-        fname = QFileDialog.getOpenFileName(self, 'Open file', home_dir)
-
-        if fname[0]:
-
-            f = open(fname[0], 'r')
-
-            with f:
-
-                data = f.read()
-                self.textEdit.setText(data)
+        if state == Qt.CheckState.Checked.value:
+            self.setWindowTitle('QCheckBox')
+        else:
+            self.setWindowTitle(' ')
 
 
 def main():

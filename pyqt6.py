@@ -1,19 +1,18 @@
-#!/usr/bin/python
-# file: simple_menu.py
+# !/usr/bin/python
+# file: submenu.py
 
 """
 ZetCode PyQt6 tutorial
 
-This program creates a menubar. The
-menubar has one menu with an exit action.
+This program creates a submenu.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
 import sys
-from PyQt6.QtWidgets import QMainWindow, QApplication
-from PyQt6.QtGui import QIcon, QAction
+from PyQt6.QtWidgets import QMainWindow, QMenu, QApplication
+from PyQt6.QtGui import QAction
 
 
 class Example(QMainWindow):
@@ -26,19 +25,20 @@ class Example(QMainWindow):
 
     def initUI(self):
 
-        exitAct = QAction(QIcon('exit.png'), '&Exit', self)
-        exitAct.setShortcut('Ctrl+Q')
-        exitAct.setStatusTip('Exit application')
-        exitAct.triggered.connect(QApplication.instance().quit)
-
-        self.statusBar()
-
         menubar = self.menuBar()
-        fileMenu = menubar.addMenu('&File')
-        fileMenu.addAction(exitAct)
+        fileMenu = menubar.addMenu('File')
+
+        impMenu = QMenu('Import', self)
+        impAct = QAction('Import mail', self)
+        impMenu.addAction(impAct)
+
+        newAct = QAction('New', self)
+
+        fileMenu.addAction(newAct)
+        fileMenu.addMenu(impMenu)
 
         self.setGeometry(300, 300, 350, 250)
-        self.setWindowTitle('Simple menu')
+        self.setWindowTitle('Submenu')
         self.show()
 
 

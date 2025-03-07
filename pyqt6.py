@@ -1,17 +1,17 @@
-# !/usr/bin/python
-# file: submenu.py
+#!/usr/bin/python
+# file: check_menu.py
 
 """
 ZetCode PyQt6 tutorial
 
-This program creates a submenu.
+This program creates a checkable menu.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
 import sys
-from PyQt6.QtWidgets import QMainWindow, QMenu, QApplication
+from PyQt6.QtWidgets import QMainWindow, QApplication
 from PyQt6.QtGui import QAction
 
 
@@ -25,21 +25,30 @@ class Example(QMainWindow):
 
     def initUI(self):
 
+        self.statusbar = self.statusBar()
+        self.statusbar.showMessage('Ready')
+
         menubar = self.menuBar()
-        fileMenu = menubar.addMenu('File')
+        viewMenu = menubar.addMenu('View')
 
-        impMenu = QMenu('Import', self)
-        impAct = QAction('Import mail', self)
-        impMenu.addAction(impAct)
+        viewStatAct = QAction('View statusbar', self, checkable=True)
+        viewStatAct.setStatusTip('View statusbar')
+        viewStatAct.setChecked(True)
+        viewStatAct.triggered.connect(self.toggleMenu)
 
-        newAct = QAction('New', self)
-
-        fileMenu.addAction(newAct)
-        fileMenu.addMenu(impMenu)
+        viewMenu.addAction(viewStatAct)
 
         self.setGeometry(300, 300, 350, 250)
-        self.setWindowTitle('Submenu')
+        self.setWindowTitle('Check menu')
         self.show()
+
+
+    def toggleMenu(self, state):
+
+        if state:
+            self.statusbar.show()
+        else:
+            self.statusbar.hide()
 
 
 def main():

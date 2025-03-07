@@ -1,18 +1,19 @@
 #!/usr/bin/python
-# file: check_box.py
+# file: toggle_button.py
 
 """
 ZetCode PyQt6 tutorial
 
-In this example, a QCheckBox widget
-is used to toggle the title of a window.
+In this example, we create three toggle buttons.
+They control the background color of a QFrame.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
-from PyQt6.QtWidgets import QWidget, QCheckBox, QApplication
-from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import (QWidget, QPushButton,
+        QFrame, QApplication)
+from PyQt6.QtGui import QColor
 import sys
 
 
@@ -26,22 +27,54 @@ class Example(QWidget):
 
     def initUI(self):
 
-        cb = QCheckBox('Show title', self)
-        cb.move(20, 20)
-        cb.toggle()
-        cb.stateChanged.connect(self.changeTitle)
+        self.col = QColor(0, 0, 0)
 
-        self.setGeometry(300, 300, 350, 250)
-        self.setWindowTitle('QCheckBox')
+        redb = QPushButton('Red', self)
+        redb.setCheckable(True)
+        redb.move(10, 10)
+
+        redb.clicked[bool].connect(self.setColor)
+
+        greenb = QPushButton('Green', self)
+        greenb.setCheckable(True)
+        greenb.move(10, 60)
+
+        greenb.clicked[bool].connect(self.setColor)
+
+        blueb = QPushButton('Blue', self)
+        blueb.setCheckable(True)
+        blueb.move(10, 110)
+
+        blueb.clicked[bool].connect(self.setColor)
+
+        self.square = QFrame(self)
+        self.square.setGeometry(150, 20, 100, 100)
+        self.square.setStyleSheet("QWidget { background-color: %s }" %
+                                  self.col.name())
+
+        self.setGeometry(300, 300, 300, 250)
+        self.setWindowTitle('Toggle button')
         self.show()
 
 
-    def changeTitle(self, state):
+    def setColor(self, pressed):
 
-        if state == Qt.CheckState.Checked.value:
-            self.setWindowTitle('QCheckBox')
+        source = self.sender()
+
+        if pressed:
+            val = 255
         else:
-            self.setWindowTitle(' ')
+            val = 0
+
+        if source.text() == "Red":
+            self.col.setRed(val)
+        elif source.text() == "Green":
+            self.col.setGreen(val)
+        else:
+            self.col.setBlue(val)
+
+        self.square.setStyleSheet("QFrame { background-color: %s }" %
+                                  self.col.name())
 
 
 def main():

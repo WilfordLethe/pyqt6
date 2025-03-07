@@ -1,18 +1,24 @@
 #!/usr/bin/python
-# event_sender.py
+# file: custom_signal.py
 
 """
 ZetCode PyQt6 tutorial
 
-In this example, we determine the event sender
-object.
+In this example, we show how to
+emit a custom signal.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
 import sys
-from PyQt6.QtWidgets import QMainWindow, QPushButton, QApplication
+from PyQt6.QtCore import pyqtSignal, QObject
+from PyQt6.QtWidgets import QMainWindow, QApplication
+
+
+class Communicate(QObject):
+
+    closeApp = pyqtSignal()
 
 
 class Example(QMainWindow):
@@ -25,28 +31,17 @@ class Example(QMainWindow):
 
     def initUI(self):
 
-        btn1 = QPushButton("Button 1", self)
-        btn1.move(30, 50)
-
-        btn2 = QPushButton("Button 2", self)
-        btn2.move(150, 50)
-
-        btn1.clicked.connect(self.buttonClicked)
-        btn2.clicked.connect(self.buttonClicked)
-
-        self.statusBar()
+        self.c = Communicate()
+        self.c.closeApp.connect(self.close)
 
         self.setGeometry(300, 300, 450, 350)
-        self.setWindowTitle('Event sender')
+        self.setWindowTitle('Emit signal')
         self.show()
 
 
-    def buttonClicked(self):
+    def mousePressEvent(self, e):
 
-        sender = self.sender()
-
-        msg = f'{sender.text()} was pressed'
-        self.statusBar().showMessage(msg)
+        self.c.closeApp.emit()
 
 
 def main():

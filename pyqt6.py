@@ -1,10 +1,10 @@
 #!/usr/bin/python
-# file: signals_slots.py
+# file: reimplement_handler.py
 
 """
 ZetCode PyQt6 tutorial
 
-本例中，把 QSlider 触发的事件和 QLCDNumber 插槽绑定起来
+本例中，我们重新实现了一个事件处理器。
 
 Author: Jan Bodnar
 Website: zetcode.com
@@ -12,8 +12,7 @@ Website: zetcode.com
 
 import sys
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import (QWidget, QLCDNumber, QSlider,
-        QVBoxLayout, QApplication)
+from PyQt6.QtWidgets import QWidget, QApplication
 
 
 class Example(QWidget):
@@ -26,23 +25,19 @@ class Example(QWidget):
 
     def initUI(self):
 
-        lcd = QLCDNumber(self)
-        sld = QSlider(Qt.Orientation.Horizontal, self)
-
-        vbox = QVBoxLayout()
-        vbox.addWidget(lcd)
-        vbox.addWidget(sld)
-
-        self.setLayout(vbox)
-        sld.valueChanged.connect(lcd.display)
-
         self.setGeometry(300, 300, 350, 250)
-        self.setWindowTitle('Signal and slot')
+        self.setWindowTitle('Event handler')
         self.show()
 
 
+    def keyPressEvent(self, e):
+        
+        if e.key() == Qt.Key.Key_Escape.value:
+            self.close()
+
+
 def main():
-    
+
     app = QApplication(sys.argv)
     ex = Example()
     sys.exit(app.exec())

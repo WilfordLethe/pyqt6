@@ -1,19 +1,18 @@
 #!/usr/bin/python
-# file: slider.py
+# file: progressbar.py
 
 """
 ZetCode PyQt6 tutorial
 
-This example shows a QSlider widget.
+This example shows a QProgressBar widget.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
-from PyQt6.QtWidgets import (QWidget, QSlider,
-        QLabel, QApplication)
-from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QPixmap
+from PyQt6.QtWidgets import (QWidget, QProgressBar,
+        QPushButton, QApplication)
+from PyQt6.QtCore import QBasicTimer
 import sys
 
 
@@ -27,34 +26,41 @@ class Example(QWidget):
 
     def initUI(self):
 
-        sld = QSlider(Qt.Orientation.Horizontal, self)
-        sld.setFocusPolicy(Qt.FocusPolicy.NoFocus)
-        sld.setGeometry(30, 40, 200, 30)
-        sld.valueChanged[int].connect(self.changeValue)
+        self.pbar = QProgressBar(self)
+        self.pbar.setGeometry(30, 40, 200, 25)
 
-        self.label = QLabel(self)
-        self.label.setPixmap(QPixmap('mute.png'))
-        self.label.setGeometry(250, 40, 80, 30)
+        self.btn = QPushButton('Start', self)
+        self.btn.move(40, 80)
+        self.btn.clicked.connect(self.doAction)
 
-        self.setGeometry(300, 300, 350, 250)
-        self.setWindowTitle('QSlider')
+        self.timer = QBasicTimer()
+        self.step = 0
+
+        self.setGeometry(300, 300, 280, 170)
+        self.setWindowTitle('QProgressBar')
         self.show()
 
 
-    def changeValue(self, value):
+    def timerEvent(self, e):
 
-        if value == 0:
+        if self.step >= 100:
 
-            self.label.setPixmap(QPixmap('mute.png'))
-        elif 0 < value <= 30:
+            self.timer.stop()
+            self.btn.setText('Finished')
+            return
 
-            self.label.setPixmap(QPixmap('min.png'))
-        elif 30 < value < 80:
+        self.step = self.step + 1
+        self.pbar.setValue(self.step)
 
-            self.label.setPixmap(QPixmap('med.png'))
+
+    def doAction(self):
+
+        if self.timer.isActive():
+            self.timer.stop()
+            self.btn.setText('Start')
         else:
-
-            self.label.setPixmap(QPixmap('max.png'))
+            self.timer.start(100, self)
+            self.btn.setText('Stop')
 
 
 def main():

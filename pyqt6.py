@@ -1,23 +1,21 @@
 #!/usr/bin/python
-# file: main_window.py
+# file: absolute.py
 
 """
 ZetCode PyQt6 tutorial
 
-This program creates a skeleton of
-a classic GUI application with a menubar,
-toolbar, statusbar, and a central widget.
+This example shows three labels on a window
+using absolute positioning.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
 import sys
-from PyQt6.QtWidgets import QMainWindow, QTextEdit, QApplication
-from PyQt6.QtGui import QIcon, QAction
+from PyQt6.QtWidgets import QWidget, QLabel, QApplication
 
 
-class Example(QMainWindow):
+class Example(QWidget):
 
     def __init__(self):
         super().__init__()
@@ -27,25 +25,17 @@ class Example(QMainWindow):
 
     def initUI(self):
 
-        textEdit = QTextEdit()
-        self.setCentralWidget(textEdit)
+        lbl1 = QLabel('ZetCode', self)
+        lbl1.move(15, 10)
 
-        exitAct = QAction(QIcon('exit24.png'), 'Exit', self)
-        exitAct.setShortcut('Ctrl+Q')
-        exitAct.setStatusTip('Exit application')
-        exitAct.triggered.connect(self.close)
+        lbl2 = QLabel('tutorials', self)
+        lbl2.move(35, 40)
 
-        self.statusBar()
-
-        menubar = self.menuBar()
-        fileMenu = menubar.addMenu('&File')
-        fileMenu.addAction(exitAct)
-
-        toolbar = self.addToolBar('Exit')
-        toolbar.addAction(exitAct)
+        lbl3 = QLabel('for programmers', self)
+        lbl3.move(55, 70)
 
         self.setGeometry(300, 300, 350, 250)
-        self.setWindowTitle('Main window')
+        self.setWindowTitle('Absolute')
         self.show()
 
 

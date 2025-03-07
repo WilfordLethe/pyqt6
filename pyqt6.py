@@ -1,20 +1,18 @@
 #!/usr/bin/python
-# file: color_dialog.py
+# file: font_dialog.py
 
 """
 ZetCode PyQt6 tutorial
 
-In this example, we select a color value
-from the QColorDialog and change the background
-color of a QFrame widget.
+In this example, we select a font name
+and change the font of a label.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
-from PyQt6.QtWidgets import (QWidget, QPushButton, QFrame,
-        QColorDialog, QApplication)
-from PyQt6.QtGui import QColor
+from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QPushButton,
+        QSizePolicy, QLabel, QFontDialog, QApplication)
 import sys
 
 
@@ -28,31 +26,33 @@ class Example(QWidget):
 
     def initUI(self):
 
-        col = QColor(0, 0, 0)
+        vbox = QVBoxLayout()
 
-        self.btn = QPushButton('Dialog', self)
-        self.btn.move(20, 20)
+        btn = QPushButton('Dialog', self)
+        btn.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
+        btn.move(20, 20)
 
-        self.btn.clicked.connect(self.showDialog)
+        vbox.addWidget(btn)
 
-        self.frm = QFrame(self)
-        self.frm.setStyleSheet("QWidget { background-color: %s }"
-                               % col.name())
-        self.frm.setGeometry(130, 22, 200, 200)
+        btn.clicked.connect(self.showDialog)
+
+        self.lbl = QLabel('Knowledge only matters', self)
+        self.lbl.move(130, 20)
+
+        vbox.addWidget(self.lbl)
+        self.setLayout(vbox)
 
         self.setGeometry(300, 300, 450, 350)
-        self.setWindowTitle('Color dialog')
+        self.setWindowTitle('Font dialog')
         self.show()
 
 
     def showDialog(self):
 
-        col = QColorDialog.getColor()
+        font, ok = QFontDialog.getFont()
 
-        if col.isValid():
-
-            self.frm.setStyleSheet("QWidget { background-color: %s }" 
-                                   % col.name())
+        if ok:
+            self.lbl.setFont(font)
 
 
 def main():

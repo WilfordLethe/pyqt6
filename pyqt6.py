@@ -1,18 +1,17 @@
 #!/usr/bin/python
-# file: check_menu.py
+# file: context_menu.py
 
 """
 ZetCode PyQt6 tutorial
 
-This program creates a checkable menu.
+This program creates a context menu.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
 import sys
-from PyQt6.QtWidgets import QMainWindow, QApplication
-from PyQt6.QtGui import QAction
+from PyQt6.QtWidgets import QMainWindow, QMenu, QApplication
 
 
 class Example(QMainWindow):
@@ -25,30 +24,22 @@ class Example(QMainWindow):
 
     def initUI(self):
 
-        self.statusbar = self.statusBar()
-        self.statusbar.showMessage('Ready')
-
-        menubar = self.menuBar()
-        viewMenu = menubar.addMenu('View')
-
-        viewStatAct = QAction('View statusbar', self, checkable=True)
-        viewStatAct.setStatusTip('View statusbar')
-        viewStatAct.setChecked(True)
-        viewStatAct.triggered.connect(self.toggleMenu)
-
-        viewMenu.addAction(viewStatAct)
-
         self.setGeometry(300, 300, 350, 250)
-        self.setWindowTitle('Check menu')
+        self.setWindowTitle('Context menu')
         self.show()
 
 
-    def toggleMenu(self, state):
+    def contextMenuEvent(self, event):
 
-        if state:
-            self.statusbar.show()
-        else:
-            self.statusbar.hide()
+        cmenu = QMenu(self)
+
+        newAct = cmenu.addAction("New")
+        openAct = cmenu.addAction("Open")
+        quitAct = cmenu.addAction("Quit")
+        action = cmenu.exec(self.mapToGlobal(event.pos()))
+
+        if action == quitAct:
+            QApplication.instance().quit()
 
 
 def main():

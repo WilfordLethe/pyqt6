@@ -1,18 +1,20 @@
 #!/usr/bin/python
-# file: input_dialog.py
+# file: color_dialog.py
 
 """
 ZetCode PyQt6 tutorial
 
-In this example, we receive data from
-a QInputDialog dialog.
+In this example, we select a color value
+from the QColorDialog and change the background
+color of a QFrame widget.
 
-Aauthor: Jan Bodnar
+Author: Jan Bodnar
 Website: zetcode.com
 """
 
-from PyQt6.QtWidgets import (QWidget, QPushButton, QLineEdit,
-        QInputDialog, QApplication)
+from PyQt6.QtWidgets import (QWidget, QPushButton, QFrame,
+        QColorDialog, QApplication)
+from PyQt6.QtGui import QColor
 import sys
 
 
@@ -26,25 +28,31 @@ class Example(QWidget):
 
     def initUI(self):
 
+        col = QColor(0, 0, 0)
+
         self.btn = QPushButton('Dialog', self)
         self.btn.move(20, 20)
+
         self.btn.clicked.connect(self.showDialog)
 
-        self.le = QLineEdit(self)
-        self.le.move(130, 22)
+        self.frm = QFrame(self)
+        self.frm.setStyleSheet("QWidget { background-color: %s }"
+                               % col.name())
+        self.frm.setGeometry(130, 22, 200, 200)
 
         self.setGeometry(300, 300, 450, 350)
-        self.setWindowTitle('Input dialog')
+        self.setWindowTitle('Color dialog')
         self.show()
 
 
     def showDialog(self):
 
-        text, ok = QInputDialog.getText(self, 'Input Dialog',
-                                        'Enter your name:')
+        col = QColorDialog.getColor()
 
-        if ok:
-            self.le.setText(str(text))
+        if col.isValid():
+
+            self.frm.setStyleSheet("QWidget { background-color: %s }" 
+                                   % col.name())
 
 
 def main():

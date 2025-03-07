@@ -1,17 +1,20 @@
 #!/usr/bin/python
-# file: context_menu.py
+# file: toolbar.py
 
 """
 ZetCode PyQt6 tutorial
 
-This program creates a context menu.
+This program creates a toolbar.
+The toolbar has one action, which
+terminates the application, if triggered.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
 import sys
-from PyQt6.QtWidgets import QMainWindow, QMenu, QApplication
+from PyQt6.QtWidgets import QMainWindow,  QApplication
+from PyQt6.QtGui import QIcon, QAction
 
 
 class Example(QMainWindow):
@@ -24,22 +27,16 @@ class Example(QMainWindow):
 
     def initUI(self):
 
+        exitAct = QAction(QIcon('exit24.png'), 'Exit', self)
+        exitAct.setShortcut('Ctrl+Q')
+        exitAct.triggered.connect(QApplication.instance().quit)
+
+        self.toolbar = self.addToolBar('Exit')
+        self.toolbar.addAction(exitAct)
+
         self.setGeometry(300, 300, 350, 250)
-        self.setWindowTitle('Context menu')
+        self.setWindowTitle('Toolbar')
         self.show()
-
-
-    def contextMenuEvent(self, event):
-
-        cmenu = QMenu(self)
-
-        newAct = cmenu.addAction("New")
-        openAct = cmenu.addAction("Open")
-        quitAct = cmenu.addAction("Quit")
-        action = cmenu.exec(self.mapToGlobal(event.pos()))
-
-        if action == quitAct:
-            QApplication.instance().quit()
 
 
 def main():

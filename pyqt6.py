@@ -1,19 +1,20 @@
 #!/usr/bin/python
-# file: quit_button.py
+# file: messagebox.py
 
 """
 ZetCode PyQt6 tutorial
 
-This program creates a quit
-button. When we press the button,
-the application terminates.
+This program shows a confirmation
+message box when we click on the close
+button of the application window.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
 import sys
-from PyQt6.QtWidgets import QWidget, QPushButton, QApplication
+from PyQt6.QtWidgets import QWidget, QMessageBox, QApplication
+
 
 class Example(QWidget):
 
@@ -22,22 +23,27 @@ class Example(QWidget):
 
         self.initUI()
 
-
     def initUI(self):
 
-        qbtn = QPushButton('Quit', self)
-        qbtn.setToolTip('click to quit')
-        qbtn.clicked.connect(QApplication.instance().quit)
-        qbtn.resize(qbtn.sizeHint())
-        qbtn.move(50, 50)
-
-        self.setGeometry(300, 300, 350, 250)
-        self.setWindowTitle('Quit button')
+        self.setGeometry(300, 300, 350, 200)
+        self.setWindowTitle('Message box')
         self.show()
+
+    def closeEvent(self, event):
+
+        reply = QMessageBox.question(self, 'Message',
+                    "Are you sure to quit?", QMessageBox.StandardButton.Yes |
+                    QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
+
+        if reply == QMessageBox.StandardButton.Yes:
+
+            event.accept()
+        else:
+
+            event.ignore()
 
 
 def main():
-
     app = QApplication(sys.argv)
     ex = Example()
     sys.exit(app.exec())

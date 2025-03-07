@@ -1,27 +1,22 @@
 #!/usr/bin/python
-# file: custom_signal.py
+# file: input_dialog.py
 
 """
 ZetCode PyQt6 tutorial
 
-In this example, we show how to
-emit a custom signal.
+In this example, we receive data from
+a QInputDialog dialog.
 
-Author: Jan Bodnar
+Aauthor: Jan Bodnar
 Website: zetcode.com
 """
 
+from PyQt6.QtWidgets import (QWidget, QPushButton, QLineEdit,
+        QInputDialog, QApplication)
 import sys
-from PyQt6.QtCore import pyqtSignal, QObject
-from PyQt6.QtWidgets import QMainWindow, QApplication
 
 
-class Communicate(QObject):
-
-    closeApp = pyqtSignal()
-
-
-class Example(QMainWindow):
+class Example(QWidget):
 
     def __init__(self):
         super().__init__()
@@ -31,17 +26,25 @@ class Example(QMainWindow):
 
     def initUI(self):
 
-        self.c = Communicate()
-        self.c.closeApp.connect(self.close)
+        self.btn = QPushButton('Dialog', self)
+        self.btn.move(20, 20)
+        self.btn.clicked.connect(self.showDialog)
+
+        self.le = QLineEdit(self)
+        self.le.move(130, 22)
 
         self.setGeometry(300, 300, 450, 350)
-        self.setWindowTitle('Emit signal')
+        self.setWindowTitle('Input dialog')
         self.show()
 
 
-    def mousePressEvent(self, e):
+    def showDialog(self):
 
-        self.c.closeApp.emit()
+        text, ok = QInputDialog.getText(self, 'Input Dialog',
+                                        'Enter your name:')
+
+        if ok:
+            self.le.setText(str(text))
 
 
 def main():

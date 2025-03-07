@@ -1,21 +1,21 @@
 #!/usr/bin/python
-# file: event_object.py
+# event_sender.py
 
 """
 ZetCode PyQt6 tutorial
 
-本例中，在标签组件里，展示了鼠标的坐标。
+In this example, we determine the event sender
+object.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
 import sys
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QWidget, QApplication, QGridLayout, QLabel
+from PyQt6.QtWidgets import QMainWindow, QPushButton, QApplication
 
 
-class Example(QWidget):
+class Example(QMainWindow):
 
     def __init__(self):
         super().__init__()
@@ -25,31 +25,28 @@ class Example(QWidget):
 
     def initUI(self):
 
-        grid = QGridLayout()
+        btn1 = QPushButton("Button 1", self)
+        btn1.move(30, 50)
 
-        x = 0
-        y = 0
+        btn2 = QPushButton("Button 2", self)
+        btn2.move(150, 50)
 
-        self.text = f'x: {x},  y: {y}'
+        btn1.clicked.connect(self.buttonClicked)
+        btn2.clicked.connect(self.buttonClicked)
 
-        self.label = QLabel(self.text, self)
-        grid.addWidget(self.label, 0, 0, Qt.AlignmentFlag.AlignTop)
+        self.statusBar()
 
-        self.setMouseTracking(True)
-        self.setLayout(grid)
-
-        self.setGeometry(300, 300, 450, 300)
-        self.setWindowTitle('Event object')
+        self.setGeometry(300, 300, 450, 350)
+        self.setWindowTitle('Event sender')
         self.show()
 
 
-    def mouseMoveEvent(self, e):
+    def buttonClicked(self):
 
-        x = int(e.position().x())
-        y = int(e.position().y())
+        sender = self.sender()
 
-        text = f'x: {x},  y: {y}'
-        self.label.setText(text)
+        msg = f'{sender.text()} was pressed'
+        self.statusBar().showMessage(msg)
 
 
 def main():

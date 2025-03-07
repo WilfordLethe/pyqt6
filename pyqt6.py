@@ -1,22 +1,25 @@
 #!/usr/bin/python
-# file: font_dialog.py
+# file: file_dialog.py
 
 """
 ZetCode PyQt6 tutorial
 
-In this example, we select a font name
-and change the font of a label.
+In this example, we select a file with a
+QFileDialog and display its contents
+in a QTextEdit.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
-from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QPushButton,
-        QSizePolicy, QLabel, QFontDialog, QApplication)
+from PyQt6.QtWidgets import (QMainWindow, QTextEdit,
+        QFileDialog, QApplication)
+from PyQt6.QtGui import QIcon, QAction
+from pathlib import Path
 import sys
 
 
-class Example(QWidget):
+class Example(QMainWindow):
 
     def __init__(self):
         super().__init__()
@@ -26,33 +29,37 @@ class Example(QWidget):
 
     def initUI(self):
 
-        vbox = QVBoxLayout()
+        self.textEdit = QTextEdit()
+        self.setCentralWidget(self.textEdit)
+        self.statusBar()
 
-        btn = QPushButton('Dialog', self)
-        btn.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
-        btn.move(20, 20)
+        openFile = QAction(QIcon('open.png'), 'Open', self)
+        openFile.setShortcut('Ctrl+O')
+        openFile.setStatusTip('Open new File')
+        openFile.triggered.connect(self.showDialog)
 
-        vbox.addWidget(btn)
+        menubar = self.menuBar()
+        fileMenu = menubar.addMenu('&File')
+        fileMenu.addAction(openFile)
 
-        btn.clicked.connect(self.showDialog)
-
-        self.lbl = QLabel('Knowledge only matters', self)
-        self.lbl.move(130, 20)
-
-        vbox.addWidget(self.lbl)
-        self.setLayout(vbox)
-
-        self.setGeometry(300, 300, 450, 350)
-        self.setWindowTitle('Font dialog')
+        self.setGeometry(300, 300, 550, 450)
+        self.setWindowTitle('File dialog')
         self.show()
 
 
     def showDialog(self):
 
-        font, ok = QFontDialog.getFont()
+        home_dir = str(Path.home())
+        fname = QFileDialog.getOpenFileName(self, 'Open file', home_dir)
 
-        if ok:
-            self.lbl.setFont(font)
+        if fname[0]:
+
+            f = open(fname[0], 'r')
+
+            with f:
+
+                data = f.read()
+                self.textEdit.setText(data)
 
 
 def main():

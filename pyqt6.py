@@ -1,20 +1,19 @@
 #!/usr/bin/python
-# file: tooltip.py
+# file: quit_button.py
 
 """
 ZetCode PyQt6 tutorial
 
-This example shows a tooltip on
-a window and a button.
+This program creates a quit
+button. When we press the button,
+the application terminates.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
 import sys
-from PyQt6.QtWidgets import (QWidget, QToolTip,QPushButton, QApplication)
-from PyQt6.QtGui import QFont
-
+from PyQt6.QtWidgets import QWidget, QPushButton, QApplication
 
 class Example(QWidget):
 
@@ -26,17 +25,14 @@ class Example(QWidget):
 
     def initUI(self):
 
-        QToolTip.setFont(QFont('SansSerif', 10))
+        qbtn = QPushButton('Quit', self)
+        qbtn.setToolTip('click to quit')
+        qbtn.clicked.connect(QApplication.instance().quit)
+        qbtn.resize(qbtn.sizeHint())
+        qbtn.move(50, 50)
 
-        self.setToolTip('This is a <b>QWidget</b> widget')
-
-        btn = QPushButton('Button', self)
-        btn.setToolTip('This is a <b>QPushButton</b> widget')
-        btn.resize(btn.sizeHint())
-        btn.move(50, 50)
-
-        self.setGeometry(300, 300, 300, 200)
-        self.setWindowTitle('Tooltips')
+        self.setGeometry(300, 300, 350, 250)
+        self.setWindowTitle('Quit button')
         self.show()
 
 

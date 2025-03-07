@@ -1,10 +1,10 @@
 #!/usr/bin/python
-# file: reimplement_handler.py
+# file: event_object.py
 
 """
 ZetCode PyQt6 tutorial
 
-本例中，我们重新实现了一个事件处理器。
+本例中，在标签组件里，展示了鼠标的坐标。
 
 Author: Jan Bodnar
 Website: zetcode.com
@@ -12,7 +12,7 @@ Website: zetcode.com
 
 import sys
 from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QWidget, QApplication
+from PyQt6.QtWidgets import QWidget, QApplication, QGridLayout, QLabel
 
 
 class Example(QWidget):
@@ -25,15 +25,31 @@ class Example(QWidget):
 
     def initUI(self):
 
-        self.setGeometry(300, 300, 350, 250)
-        self.setWindowTitle('Event handler')
+        grid = QGridLayout()
+
+        x = 0
+        y = 0
+
+        self.text = f'x: {x},  y: {y}'
+
+        self.label = QLabel(self.text, self)
+        grid.addWidget(self.label, 0, 0, Qt.AlignmentFlag.AlignTop)
+
+        self.setMouseTracking(True)
+        self.setLayout(grid)
+
+        self.setGeometry(300, 300, 450, 300)
+        self.setWindowTitle('Event object')
         self.show()
 
 
-    def keyPressEvent(self, e):
-        
-        if e.key() == Qt.Key.Key_Escape.value:
-            self.close()
+    def mouseMoveEvent(self, e):
+
+        x = int(e.position().x())
+        y = int(e.position().y())
+
+        text = f'x: {x},  y: {y}'
+        self.label.setText(text)
 
 
 def main():

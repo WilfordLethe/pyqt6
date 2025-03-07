@@ -1,19 +1,19 @@
 #!/usr/bin/python
-# file: toggle_button.py
+# file: slider.py
 
 """
 ZetCode PyQt6 tutorial
 
-In this example, we create three toggle buttons.
-They control the background color of a QFrame.
+This example shows a QSlider widget.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
-from PyQt6.QtWidgets import (QWidget, QPushButton,
-        QFrame, QApplication)
-from PyQt6.QtGui import QColor
+from PyQt6.QtWidgets import (QWidget, QSlider,
+        QLabel, QApplication)
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QPixmap
 import sys
 
 
@@ -27,54 +27,34 @@ class Example(QWidget):
 
     def initUI(self):
 
-        self.col = QColor(0, 0, 0)
+        sld = QSlider(Qt.Orientation.Horizontal, self)
+        sld.setFocusPolicy(Qt.FocusPolicy.NoFocus)
+        sld.setGeometry(30, 40, 200, 30)
+        sld.valueChanged[int].connect(self.changeValue)
 
-        redb = QPushButton('Red', self)
-        redb.setCheckable(True)
-        redb.move(10, 10)
+        self.label = QLabel(self)
+        self.label.setPixmap(QPixmap('mute.png'))
+        self.label.setGeometry(250, 40, 80, 30)
 
-        redb.clicked[bool].connect(self.setColor)
-
-        greenb = QPushButton('Green', self)
-        greenb.setCheckable(True)
-        greenb.move(10, 60)
-
-        greenb.clicked[bool].connect(self.setColor)
-
-        blueb = QPushButton('Blue', self)
-        blueb.setCheckable(True)
-        blueb.move(10, 110)
-
-        blueb.clicked[bool].connect(self.setColor)
-
-        self.square = QFrame(self)
-        self.square.setGeometry(150, 20, 100, 100)
-        self.square.setStyleSheet("QWidget { background-color: %s }" %
-                                  self.col.name())
-
-        self.setGeometry(300, 300, 300, 250)
-        self.setWindowTitle('Toggle button')
+        self.setGeometry(300, 300, 350, 250)
+        self.setWindowTitle('QSlider')
         self.show()
 
 
-    def setColor(self, pressed):
+    def changeValue(self, value):
 
-        source = self.sender()
+        if value == 0:
 
-        if pressed:
-            val = 255
+            self.label.setPixmap(QPixmap('mute.png'))
+        elif 0 < value <= 30:
+
+            self.label.setPixmap(QPixmap('min.png'))
+        elif 30 < value < 80:
+
+            self.label.setPixmap(QPixmap('med.png'))
         else:
-            val = 0
 
-        if source.text() == "Red":
-            self.col.setRed(val)
-        elif source.text() == "Green":
-            self.col.setGreen(val)
-        else:
-            self.col.setBlue(val)
-
-        self.square.setStyleSheet("QFrame { background-color: %s }" %
-                                  self.col.name())
+            self.label.setPixmap(QPixmap('max.png'))
 
 
 def main():

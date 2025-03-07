@@ -1,19 +1,19 @@
 #!/usr/bin/python
-# file: toolbar.py
+# file: main_window.py
 
 """
 ZetCode PyQt6 tutorial
 
-This program creates a toolbar.
-The toolbar has one action, which
-terminates the application, if triggered.
+This program creates a skeleton of
+a classic GUI application with a menubar,
+toolbar, statusbar, and a central widget.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
 import sys
-from PyQt6.QtWidgets import QMainWindow,  QApplication
+from PyQt6.QtWidgets import QMainWindow, QTextEdit, QApplication
 from PyQt6.QtGui import QIcon, QAction
 
 
@@ -27,15 +27,25 @@ class Example(QMainWindow):
 
     def initUI(self):
 
+        textEdit = QTextEdit()
+        self.setCentralWidget(textEdit)
+
         exitAct = QAction(QIcon('exit24.png'), 'Exit', self)
         exitAct.setShortcut('Ctrl+Q')
-        exitAct.triggered.connect(QApplication.instance().quit)
+        exitAct.setStatusTip('Exit application')
+        exitAct.triggered.connect(self.close)
 
-        self.toolbar = self.addToolBar('Exit')
-        self.toolbar.addAction(exitAct)
+        self.statusBar()
+
+        menubar = self.menuBar()
+        fileMenu = menubar.addMenu('&File')
+        fileMenu.addAction(exitAct)
+
+        toolbar = self.addToolBar('Exit')
+        toolbar.addAction(exitAct)
 
         self.setGeometry(300, 300, 350, 250)
-        self.setWindowTitle('Toolbar')
+        self.setWindowTitle('Main window')
         self.show()
 
 

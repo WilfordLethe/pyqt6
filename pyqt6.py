@@ -1,20 +1,19 @@
 #!/usr/bin/python
-# file: review.py
+# file: signals_slots.py
 
 """
 ZetCode PyQt6 tutorial
 
-In this example, we create a bit
-more complicated window layout using
-the QGridLayout manager.
+本例中，把 QSlider 触发的事件和 QLCDNumber 插槽绑定起来
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
 import sys
-from PyQt6.QtWidgets import (QWidget, QLabel, QLineEdit,
-        QTextEdit, QGridLayout, QApplication)
+from PyQt6.QtCore import Qt
+from PyQt6.QtWidgets import (QWidget, QLCDNumber, QSlider,
+        QVBoxLayout, QApplication)
 
 
 class Example(QWidget):
@@ -27,35 +26,23 @@ class Example(QWidget):
 
     def initUI(self):
 
-        title = QLabel('Title')
-        author = QLabel('Author')
-        review = QLabel('Review')
+        lcd = QLCDNumber(self)
+        sld = QSlider(Qt.Orientation.Horizontal, self)
 
-        titleEdit = QLineEdit()
-        authorEdit = QLineEdit()
-        reviewEdit = QTextEdit()
+        vbox = QVBoxLayout()
+        vbox.addWidget(lcd)
+        vbox.addWidget(sld)
 
-        grid = QGridLayout()
-        grid.setSpacing(10)
+        self.setLayout(vbox)
+        sld.valueChanged.connect(lcd.display)
 
-        grid.addWidget(title, 1, 0)
-        grid.addWidget(titleEdit, 1, 1)
-
-        grid.addWidget(author, 2, 0)
-        grid.addWidget(authorEdit, 2, 1)
-
-        grid.addWidget(review, 3, 0)
-        grid.addWidget(reviewEdit, 3, 1, 5, 1)
-
-        self.setLayout(grid)
-
-        self.setGeometry(300, 300, 350, 300)
-        self.setWindowTitle('Review')
+        self.setGeometry(300, 300, 350, 250)
+        self.setWindowTitle('Signal and slot')
         self.show()
 
 
 def main():
-
+    
     app = QApplication(sys.argv)
     ex = Example()
     sys.exit(app.exec())

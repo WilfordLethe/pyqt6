@@ -1,18 +1,19 @@
 #!/usr/bin/python
-# file: absolute.py
+# file: box_layout.py
 
 """
 ZetCode PyQt6 tutorial
 
-This example shows three labels on a window
-using absolute positioning.
+In this example, we position two push
+buttons in the bottom-right corner
+of the window.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
 import sys
-from PyQt6.QtWidgets import QWidget, QLabel, QApplication
+from PyQt6.QtWidgets import (QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication)
 
 
 class Example(QWidget):
@@ -25,17 +26,22 @@ class Example(QWidget):
 
     def initUI(self):
 
-        lbl1 = QLabel('ZetCode', self)
-        lbl1.move(15, 10)
+        okButton = QPushButton("OK")
+        cancelButton = QPushButton("Cancel")
 
-        lbl2 = QLabel('tutorials', self)
-        lbl2.move(35, 40)
+        hbox = QHBoxLayout()
+        hbox.addStretch(1)
+        hbox.addWidget(okButton)
+        hbox.addWidget(cancelButton)
 
-        lbl3 = QLabel('for programmers', self)
-        lbl3.move(55, 70)
+        vbox = QVBoxLayout()
+        vbox.addStretch(1)
+        vbox.addLayout(hbox)
+
+        self.setLayout(vbox)
 
         self.setGeometry(300, 300, 350, 250)
-        self.setWindowTitle('Absolute')
+        self.setWindowTitle('Buttons')
         self.show()
 
 

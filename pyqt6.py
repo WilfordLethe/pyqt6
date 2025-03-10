@@ -1,11 +1,11 @@
 #!/usr/bin/python
-# file: combobox.py
+# file: simple.py
 
 """
 ZetCode PyQt6 tutorial
 
-This example shows how to use
-a QComboBox widget.
+This is a simple drag and
+drop example.
 
 Author: Jan Bodnar
 Website: zetcode.com
@@ -13,7 +13,28 @@ Website: zetcode.com
 
 import sys
 
-from PyQt6.QtWidgets import (QWidget, QLabel, QComboBox, QApplication)
+from PyQt6.QtWidgets import (QPushButton, QWidget,  QLineEdit, QApplication)
+
+
+class Button(QPushButton):
+
+    def __init__(self, title, parent):
+        super().__init__(title, parent)
+
+        self.setAcceptDrops(True)
+
+
+    def dragEnterEvent(self, e):
+
+        if e.mimeData().hasFormat('text/plain'):
+            e.accept()
+        else:
+            e.ignore()
+
+
+    def dropEvent(self, e):
+
+        self.setText(e.mimeData().text())
 
 
 class Example(QWidget):
@@ -26,37 +47,23 @@ class Example(QWidget):
 
     def initUI(self):
 
-        self.lbl = QLabel('Ubuntu', self)
+        edit = QLineEdit('', self)
+        edit.setDragEnabled(True)
+        edit.move(30, 65)
 
-        combo = QComboBox(self)
+        button = Button("Button", self)
+        button.move(190, 65)
 
-        combo.addItem('Ubuntu')
-        combo.addItem('Mandriva')
-        combo.addItem('Fedora')
-        combo.addItem('Arch')
-        combo.addItem('Gentoo')
-
-        combo.move(50, 50)
-        self.lbl.move(50, 150)
-
-        combo.textActivated[str].connect(self.onActivated)
-
-        self.setGeometry(300, 300, 450, 400)
-        self.setWindowTitle('QComboBox')
-        self.show()
-
-
-    def onActivated(self, text):
-
-        self.lbl.setText(text)
-        self.lbl.adjustSize()
+        self.setWindowTitle('Simple drag and drop')
+        self.setGeometry(300, 300, 300, 150)
 
 
 def main():
 
     app = QApplication(sys.argv)
     ex = Example()
-    sys.exit(app.exec())
+    ex.show()
+    app.exec()
 
 
 if __name__ == '__main__':

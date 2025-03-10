@@ -1,49 +1,19 @@
 #!/usr/bin/python
-# file: drag_button.py
+# file: draw_text.py
 
 """
 ZetCode PyQt6 tutorial
 
-在这个程序里，有一个按钮，可以用鼠标左键点击，也可以鼠标右键拖放
+In this example, we draw text in Russian Cylliric.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
 import sys
-
-from PyQt6.QtCore import Qt, QMimeData
-from PyQt6.QtGui import QDrag
-from PyQt6.QtWidgets import QPushButton, QWidget, QApplication
-
-
-class Button(QPushButton):
-
-    def __init__(self, title, parent):
-        super().__init__(title, parent)
-
-
-    def mouseMoveEvent(self, e):
-
-        if e.buttons() != Qt.MouseButton.RightButton:
-            return
-
-        mimeData = QMimeData()
-
-        drag = QDrag(self)
-        drag.setMimeData(mimeData)
-
-        drag.setHotSpot(e.position().toPoint() - self.rect().topLeft())
-
-        dropAction = drag.exec(Qt.DropAction.MoveAction)
-
-
-    def mousePressEvent(self, e):
-
-        super().mousePressEvent(e)
-
-        if e.button() == Qt.MouseButton.LeftButton:
-            print('press')
+from PyQt6.QtWidgets import QWidget, QApplication
+from PyQt6.QtGui import QPainter, QColor, QFont
+from PyQt6.QtCore import Qt
 
 
 class Example(QWidget):
@@ -56,35 +26,33 @@ class Example(QWidget):
 
     def initUI(self):
 
-        self.setAcceptDrops(True)
+        self.text = "Лев Николаевич Толстой\nАнна Каренина"
 
-        self.button = Button('Button', self)
-        self.button.move(100, 65)
-
-        self.setWindowTitle('Click or Move')
-        self.setGeometry(300, 300, 550, 450)
+        self.setGeometry(300, 300, 350, 300)
+        self.setWindowTitle('Drawing text')
+        self.show()
 
 
-    def dragEnterEvent(self, e):
+    def paintEvent(self, event):
 
-        e.accept()
+        qp = QPainter()
+        qp.begin(self)
+        self.drawText(event, qp)
+        qp.end()
 
 
-    def dropEvent(self, e):
+    def drawText(self, event, qp):
 
-        position = e.position()
-        self.button.move(position.toPoint())
-
-        e.setDropAction(Qt.DropAction.MoveAction)
-        e.accept()
+        qp.setPen(QColor(168, 34, 3))
+        qp.setFont(QFont('Decorative', 10))
+        qp.drawText(event.rect(), Qt.AlignmentFlag.AlignCenter, self.text)
 
 
 def main():
-    
+
     app = QApplication(sys.argv)
     ex = Example()
-    ex.show()
-    app.exec()
+    sys.exit(app.exec())
 
 
 if __name__ == '__main__':

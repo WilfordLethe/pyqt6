@@ -1,18 +1,18 @@
 #!/usr/bin/python
-# file: pens.py
+# file: brushes.py
 
 """
 ZetCode PyQt6 tutorial
 
-In this example we draw 6 lines using
-different pen styles.
+This example draws nine rectangles in different
+brush styles.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
 from PyQt6.QtWidgets import QWidget, QApplication
-from PyQt6.QtGui import QPainter, QPen
+from PyQt6.QtGui import QPainter, QBrush
 from PyQt6.QtCore import Qt
 import sys
 
@@ -27,8 +27,8 @@ class Example(QWidget):
 
     def initUI(self):
 
-        self.setGeometry(300, 300, 280, 270)
-        self.setWindowTitle('Pen styles')
+        self.setGeometry(300, 300, 355, 280)
+        self.setWindowTitle('Brushes')
         self.show()
 
 
@@ -36,41 +36,51 @@ class Example(QWidget):
 
         qp = QPainter()
         qp.begin(self)
-        self.drawLines(qp)
+        self.drawBrushes(qp)
         qp.end()
 
 
-    def drawLines(self, qp):
+    def drawBrushes(self, qp):
 
-        pen = QPen(Qt.GlobalColor.black, 2, Qt.PenStyle.SolidLine)
+        brush = QBrush(Qt.BrushStyle.SolidPattern)
+        qp.setBrush(brush)
+        qp.drawRect(10, 15, 90, 60)
 
-        qp.setPen(pen)
-        qp.drawLine(20, 40, 250, 40)
+        brush.setStyle(Qt.BrushStyle.Dense1Pattern)
+        qp.setBrush(brush)
+        qp.drawRect(130, 15, 90, 60)
 
-        pen.setStyle(Qt.PenStyle.DashLine)
-        qp.setPen(pen)
-        qp.drawLine(20, 80, 250, 80)
+        brush.setStyle(Qt.BrushStyle.Dense2Pattern)
+        qp.setBrush(brush)
+        qp.drawRect(250, 15, 90, 60)
 
-        pen.setStyle(Qt.PenStyle.DashDotLine)
-        qp.setPen(pen)
-        qp.drawLine(20, 120, 250, 120)
+        brush.setStyle(Qt.BrushStyle.DiagCrossPattern)
+        qp.setBrush(brush)
+        qp.drawRect(10, 105, 90, 60)
 
-        pen.setStyle(Qt.PenStyle.DotLine)
-        qp.setPen(pen)
-        qp.drawLine(20, 160, 250, 160)
+        brush.setStyle(Qt.BrushStyle.Dense5Pattern)
+        qp.setBrush(brush)
+        qp.drawRect(130, 105, 90, 60)
 
-        pen.setStyle(Qt.PenStyle.DashDotDotLine)
-        qp.setPen(pen)
-        qp.drawLine(20, 200, 250, 200)
+        brush.setStyle(Qt.BrushStyle.Dense6Pattern)
+        qp.setBrush(brush)
+        qp.drawRect(250, 105, 90, 60)
 
-        pen.setStyle(Qt.PenStyle.CustomDashLine)
-        pen.setDashPattern([1, 4, 5, 4])
-        qp.setPen(pen)
-        qp.drawLine(20, 240, 250, 240)
+        brush.setStyle(Qt.BrushStyle.HorPattern)
+        qp.setBrush(brush)
+        qp.drawRect(10, 195, 90, 60)
+
+        brush.setStyle(Qt.BrushStyle.VerPattern)
+        qp.setBrush(brush)
+        qp.drawRect(130, 195, 90, 60)
+
+        brush.setStyle(Qt.BrushStyle.BDiagPattern)
+        qp.setBrush(brush)
+        qp.drawRect(250, 195, 90, 60)
 
 
 def main():
-    
+
     app = QApplication(sys.argv)
     ex = Example()
     sys.exit(app.exec())

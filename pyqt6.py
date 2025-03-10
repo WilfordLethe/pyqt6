@@ -1,18 +1,19 @@
 #!/usr/bin/python
-# file: colours.py
+# file: pens.py
 
 """
 ZetCode PyQt6 tutorial
 
-This example draws three rectangles in three
-different colours.
+In this example we draw 6 lines using
+different pen styles.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
 from PyQt6.QtWidgets import QWidget, QApplication
-from PyQt6.QtGui import QPainter, QColor
+from PyQt6.QtGui import QPainter, QPen
+from PyQt6.QtCore import Qt
 import sys
 
 
@@ -26,8 +27,8 @@ class Example(QWidget):
 
     def initUI(self):
 
-        self.setGeometry(300, 300, 350, 100)
-        self.setWindowTitle('Colours')
+        self.setGeometry(300, 300, 280, 270)
+        self.setWindowTitle('Pen styles')
         self.show()
 
 
@@ -35,28 +36,41 @@ class Example(QWidget):
 
         qp = QPainter()
         qp.begin(self)
-        self.drawRectangles(qp)
+        self.drawLines(qp)
         qp.end()
 
 
-    def drawRectangles(self, qp):
+    def drawLines(self, qp):
 
-        col = QColor(0, 0, 0)
-        col.setNamedColor('#d4d4d4')
-        qp.setPen(col)
+        pen = QPen(Qt.GlobalColor.black, 2, Qt.PenStyle.SolidLine)
 
-        qp.setBrush(QColor(200, 0, 0))
-        qp.drawRect(10, 15, 90, 60)
+        qp.setPen(pen)
+        qp.drawLine(20, 40, 250, 40)
 
-        qp.setBrush(QColor(255, 80, 0, 160))
-        qp.drawRect(130, 15, 90, 60)
+        pen.setStyle(Qt.PenStyle.DashLine)
+        qp.setPen(pen)
+        qp.drawLine(20, 80, 250, 80)
 
-        qp.setBrush(QColor(25, 0, 90, 200))
-        qp.drawRect(250, 15, 90, 60)
+        pen.setStyle(Qt.PenStyle.DashDotLine)
+        qp.setPen(pen)
+        qp.drawLine(20, 120, 250, 120)
+
+        pen.setStyle(Qt.PenStyle.DotLine)
+        qp.setPen(pen)
+        qp.drawLine(20, 160, 250, 160)
+
+        pen.setStyle(Qt.PenStyle.DashDotDotLine)
+        qp.setPen(pen)
+        qp.drawLine(20, 200, 250, 200)
+
+        pen.setStyle(Qt.PenStyle.CustomDashLine)
+        pen.setDashPattern([1, 4, 5, 4])
+        qp.setPen(pen)
+        qp.drawLine(20, 240, 250, 240)
 
 
 def main():
-
+    
     app = QApplication(sys.argv)
     ex = Example()
     sys.exit(app.exec())

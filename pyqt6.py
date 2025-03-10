@@ -1,11 +1,11 @@
 #!/usr/bin/python
-# file: splitter.py
+# file: combobox.py
 
 """
 ZetCode PyQt6 tutorial
 
-This example shows
-how to use QSplitter widget.
+This example shows how to use
+a QComboBox widget.
 
 Author: Jan Bodnar
 Website: zetcode.com
@@ -13,8 +13,7 @@ Website: zetcode.com
 
 import sys
 
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import (QWidget, QHBoxLayout, QFrame, QSplitter, QApplication)
+from PyQt6.QtWidgets import (QWidget, QLabel, QComboBox, QApplication)
 
 
 class Example(QWidget):
@@ -27,31 +26,30 @@ class Example(QWidget):
 
     def initUI(self):
 
-        hbox = QHBoxLayout(self)
+        self.lbl = QLabel('Ubuntu', self)
 
-        topleft = QFrame(self)
-        topleft.setFrameShape(QFrame.Shape.StyledPanel)
+        combo = QComboBox(self)
 
-        topright = QFrame(self)
-        topright.setFrameShape(QFrame.Shape.StyledPanel)
+        combo.addItem('Ubuntu')
+        combo.addItem('Mandriva')
+        combo.addItem('Fedora')
+        combo.addItem('Arch')
+        combo.addItem('Gentoo')
 
-        bottom = QFrame(self)
-        bottom.setFrameShape(QFrame.Shape.StyledPanel)
+        combo.move(50, 50)
+        self.lbl.move(50, 150)
 
-        splitter1 = QSplitter(Qt.Orientation.Horizontal)
-        splitter1.addWidget(topleft)
-        splitter1.addWidget(topright)
-
-        splitter2 = QSplitter(Qt.Orientation.Vertical)
-        splitter2.addWidget(splitter1)
-        splitter2.addWidget(bottom)
-
-        hbox.addWidget(splitter2)
-        self.setLayout(hbox)
+        combo.textActivated[str].connect(self.onActivated)
 
         self.setGeometry(300, 300, 450, 400)
-        self.setWindowTitle('QSplitter')
+        self.setWindowTitle('QComboBox')
         self.show()
+
+
+    def onActivated(self, text):
+
+        self.lbl.setText(text)
+        self.lbl.adjustSize()
 
 
 def main():

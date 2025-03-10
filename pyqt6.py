@@ -1,20 +1,19 @@
 #!/usr/bin/python
-# file: draw_points.py
+# file: colours.py
 
 """
 ZetCode PyQt6 tutorial
 
-In the example, we draw randomly 1000 red points
-on the window.
+This example draws three rectangles in three
+different colours.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
 from PyQt6.QtWidgets import QWidget, QApplication
-from PyQt6.QtGui import QPainter
-from PyQt6.QtCore import Qt
-import sys, random
+from PyQt6.QtGui import QPainter, QColor
+import sys
 
 
 class Example(QWidget):
@@ -27,9 +26,8 @@ class Example(QWidget):
 
     def initUI(self):
 
-        self.setMinimumSize(50, 50)
-        self.setGeometry(300, 300, 350, 300)
-        self.setWindowTitle('Points')
+        self.setGeometry(300, 300, 350, 100)
+        self.setWindowTitle('Colours')
         self.show()
 
 
@@ -37,20 +35,24 @@ class Example(QWidget):
 
         qp = QPainter()
         qp.begin(self)
-        self.drawPoints(qp)
+        self.drawRectangles(qp)
         qp.end()
 
 
-    def drawPoints(self, qp):
+    def drawRectangles(self, qp):
 
-        qp.setPen(Qt.GlobalColor.red)
-        size = self.size()
+        col = QColor(0, 0, 0)
+        col.setNamedColor('#d4d4d4')
+        qp.setPen(col)
 
-        for i in range(1000):
+        qp.setBrush(QColor(200, 0, 0))
+        qp.drawRect(10, 15, 90, 60)
 
-            x = random.randint(1, size.width() - 1)
-            y = random.randint(1, size.height() - 1)
-            qp.drawPoint(x, y)
+        qp.setBrush(QColor(255, 80, 0, 160))
+        qp.drawRect(130, 15, 90, 60)
+
+        qp.setBrush(QColor(25, 0, 90, 200))
+        qp.drawRect(250, 15, 90, 60)
 
 
 def main():

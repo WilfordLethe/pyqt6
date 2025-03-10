@@ -1,20 +1,19 @@
 #!/usr/bin/python
-# file: pixmap.py
+# file: line_edit.py
 
 """
 ZetCode PyQt6 tutorial
 
-In this example, we display an image
-on the window.
+This example shows text which
+is entered in a QLineEdit
+in a QLabel widget.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
-from PyQt6.QtWidgets import (QWidget, QHBoxLayout,
-        QLabel, QApplication)
-from PyQt6.QtGui import QPixmap
 import sys
+from PyQt6.QtWidgets import (QWidget, QLabel, QLineEdit, QApplication)
 
 
 class Example(QWidget):
@@ -27,18 +26,23 @@ class Example(QWidget):
 
     def initUI(self):
 
-        hbox = QHBoxLayout(self)
-        pixmap = QPixmap('sid.jpg')
+        self.lbl = QLabel(self)
+        qle = QLineEdit(self)
 
-        lbl = QLabel(self)
-        lbl.setPixmap(pixmap)
+        qle.move(60, 100)
+        self.lbl.move(60, 40)
 
-        hbox.addWidget(lbl)
-        self.setLayout(hbox)
+        qle.textChanged[str].connect(self.onChanged)
 
-        self.move(300, 200)
-        self.setWindowTitle('Sid')
+        self.setGeometry(300, 300, 350, 250)
+        self.setWindowTitle('QLineEdit')
         self.show()
+
+
+    def onChanged(self, text):
+
+        self.lbl.setText(text)
+        self.lbl.adjustSize()
 
 
 def main():

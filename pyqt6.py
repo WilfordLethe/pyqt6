@@ -1,20 +1,20 @@
 #!/usr/bin/python
-# file: brushes.py
+# file: bezier_curve.py
 
 """
 ZetCode PyQt6 tutorial
 
-This example draws nine rectangles in different
-brush styles.
+This program draws a Bézier curve with
+QPainterPath.
 
 Author: Jan Bodnar
 Website: zetcode.com
 """
 
-from PyQt6.QtWidgets import QWidget, QApplication
-from PyQt6.QtGui import QPainter, QBrush
-from PyQt6.QtCore import Qt
 import sys
+
+from PyQt6.QtGui import QPainter, QPainterPath
+from PyQt6.QtWidgets import QWidget, QApplication
 
 
 class Example(QWidget):
@@ -27,8 +27,8 @@ class Example(QWidget):
 
     def initUI(self):
 
-        self.setGeometry(300, 300, 355, 280)
-        self.setWindowTitle('Brushes')
+        self.setGeometry(300, 300, 380, 250)
+        self.setWindowTitle('Bézier curve')
         self.show()
 
 
@@ -36,47 +36,18 @@ class Example(QWidget):
 
         qp = QPainter()
         qp.begin(self)
-        self.drawBrushes(qp)
+        qp.setRenderHint(QPainter.RenderHint.Antialiasing)
+        self.drawBezierCurve(qp)
         qp.end()
 
 
-    def drawBrushes(self, qp):
+    def drawBezierCurve(self, qp):
+    
+        path = QPainterPath()
+        path.moveTo(30, 30)
+        path.cubicTo(30, 30, 200, 350, 350, 30)
 
-        brush = QBrush(Qt.BrushStyle.SolidPattern)
-        qp.setBrush(brush)
-        qp.drawRect(10, 15, 90, 60)
-
-        brush.setStyle(Qt.BrushStyle.Dense1Pattern)
-        qp.setBrush(brush)
-        qp.drawRect(130, 15, 90, 60)
-
-        brush.setStyle(Qt.BrushStyle.Dense2Pattern)
-        qp.setBrush(brush)
-        qp.drawRect(250, 15, 90, 60)
-
-        brush.setStyle(Qt.BrushStyle.DiagCrossPattern)
-        qp.setBrush(brush)
-        qp.drawRect(10, 105, 90, 60)
-
-        brush.setStyle(Qt.BrushStyle.Dense5Pattern)
-        qp.setBrush(brush)
-        qp.drawRect(130, 105, 90, 60)
-
-        brush.setStyle(Qt.BrushStyle.Dense6Pattern)
-        qp.setBrush(brush)
-        qp.drawRect(250, 105, 90, 60)
-
-        brush.setStyle(Qt.BrushStyle.HorPattern)
-        qp.setBrush(brush)
-        qp.drawRect(10, 195, 90, 60)
-
-        brush.setStyle(Qt.BrushStyle.VerPattern)
-        qp.setBrush(brush)
-        qp.drawRect(130, 195, 90, 60)
-
-        brush.setStyle(Qt.BrushStyle.BDiagPattern)
-        qp.setBrush(brush)
-        qp.drawRect(250, 195, 90, 60)
+        qp.drawPath(path)
 
 
 def main():
